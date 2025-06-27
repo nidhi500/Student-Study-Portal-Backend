@@ -1,11 +1,11 @@
-# Use a JDK image and manually install gradlew wrapper
+# Use a JDK image to build
 FROM eclipse-temurin:17-jdk AS builder
 
 WORKDIR /app
 COPY . .
 
-# Ensure gradlew is executable
-RUN chmod +x gradlew
+# 🔑 This line is important — make gradlew executable in Docker context
+RUN chmod +x ./gradlew
 
 # Build the Spring Boot JAR
 RUN ./gradlew bootJar --no-daemon
