@@ -28,12 +28,19 @@ import com.studentcompanion.model.User;
 import com.studentcompanion.repository.UserRepository;
 import com.studentcompanion.service.CustomUserDetailsService;
 import com.studentcompanion.util.JwtUtil;
-
+import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(
+    origins = {
+        "https://student-study-portal-frontend-e65xq7bo8.vercel.app",
+        "https://student-study-portal-frontend-eyp1okzdf.vercel.app"
+    },
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS},
+    allowedHeaders = "*"
+)
 public class AuthController {
 
     @Autowired
