@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         "/api/auth/login", 
         "/api/auth/register",
         "/api/auth/test",
-        "/api/users/register"
+        "/api/auth/register"
     );
 
     @Override

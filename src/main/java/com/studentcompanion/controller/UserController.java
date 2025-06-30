@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studentcompanion.model.User;
@@ -23,7 +23,7 @@ import com.studentcompanion.repository.UserRepository;
     allowedHeaders = "*"
 )
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class UserController {
 
     @Autowired

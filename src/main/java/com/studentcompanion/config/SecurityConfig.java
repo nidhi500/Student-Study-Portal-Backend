@@ -72,7 +72,7 @@ public class SecurityConfig {
                 ).permitAll()
 
                 // Secure endpoints
-                .requestMatchers("/api/users/profile").authenticated()
+                .requestMatchers("/api/auth/profile").authenticated()
                 .requestMatchers("/api/comments/**").authenticated() // 👈 Required for comment POST
                 
                 .anyRequest().permitAll() // fallback
