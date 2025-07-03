@@ -63,20 +63,24 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Publicly accessible endpoints
-                .requestMatchers(
-                    "/api/auth/**",
-                    "/api/public/**",
-                    "/api/todos/**",
-                    "/", "/favicon.ico", "/css/**", "/js/**", "/images/**"
-                ).permitAll()
+    // Publicly accessible endpoints
+    .requestMatchers(
+        "/api/auth/**",
+        "/api/public/**",
+        "/api/todos/**",
+        "/", "/favicon.ico", "/css/**", "/js/**", "/images/**"
+    ).permitAll()
 
-                // Secure endpoints
-                .requestMatchers("/api/auth/profile").authenticated()
-                .requestMatchers("/api/comments/**").authenticated() // 👈 Required for comment POST
-                
-                .anyRequest().permitAll() // fallback
-            )
+    // Secure endpoints
+    .requestMatchers(
+        "/api/auth/profile",
+        "/api/comments/**",
+        "/api/contributions/**" // ✅ Add this line to allow contribution endpoints with JWT
+    ).authenticated()
+
+    .anyRequest().permitAll()
+)
+
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
