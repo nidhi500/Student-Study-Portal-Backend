@@ -19,18 +19,23 @@ public class QuizController {
     @Autowired
     private QuizQuestionRepository quizQuestionRepository;
 
-    // ✅ Fetch 20 random questions by goal
+    // ✅ Fetch 20 random questions by goal (case-insensitive and safe)
     @GetMapping("/{goal}")
     public ResponseEntity<?> getQuizByGoal(@PathVariable String goal) {
         try {
-            CareerGoal enumGoal = CareerGoal.valueOf(goal.toUpperCase());
+            // Safe parsing of enum (case-insensitive)
+            CareerGoal enumGoal = Arrays.stream(CareerGoal.values())
+                    .filter(g -> g.name().equalsIgnoreCase(goal))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid career goal: " + goal));
+
             List<QuizQuestion> all = quizQuestionRepository.findRandomQuestionsByGoal(enumGoal);
             List<QuizQuestion> top20 = all.size() > 20 ? all.subList(0, 20) : all;
 
             return ResponseEntity.ok(top20);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "Invalid career goal: " + goal));
+                    .body(Collections.singletonMap("error", e.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError()
