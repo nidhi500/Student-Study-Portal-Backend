@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.studentcompanion.dto.ContributionDTO;
 import com.studentcompanion.model.Contribution;
 import com.studentcompanion.model.User;
 import com.studentcompanion.repository.ContributionRepository;
 import com.studentcompanion.repository.UserRepository;
-import com.studentcompanion.dto.ContributionDTO;
 
 @RestController
 @RequestMapping("/api/contributions")
@@ -32,11 +32,13 @@ private UserRepository userRepository;
 
 // @Autowired
 // private CommentRepository commentRepository;
-
 @PostMapping("/add")
 public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authentication authentication) {
     try {
+        System.out.println("📥 Received DTO: " + dto);
         String email = (authentication != null) ? authentication.getName() : "agrawalnidhi241@gmail.com";
+        System.out.println("🔐 Authenticated user: " + email);
+
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new RuntimeException("User not found");
@@ -52,15 +54,15 @@ public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authe
         contribution.setUser(user);
         contribution.setCreatedAt(LocalDateTime.now());
 
+        System.out.println("✅ Ready to save: " + contribution);
         contributionRepository.save(contribution);
         return ResponseEntity.ok("✅ Contribution saved");
+
     } catch (Exception e) {
         e.printStackTrace();
         return ResponseEntity.internalServerError().body("❌ Server Error: " + e.getMessage());
     }
 }
-
-
 
 
 @GetMapping("/my")
