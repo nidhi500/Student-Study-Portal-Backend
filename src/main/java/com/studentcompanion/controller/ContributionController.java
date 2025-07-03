@@ -35,12 +35,20 @@ private UserRepository userRepository;
 @PostMapping("/add")
 public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authentication authentication) {
     try {
-        System.out.println("📥 Received DTO: " + dto);
+        // Log everything
+        System.out.println("🚀 Incoming contribution payload:");
+        System.out.println("Title: " + dto.getTitle());
+        System.out.println("Type: " + dto.getType());
+        System.out.println("Subject: " + dto.getSubject());
+        System.out.println("Visibility: " + dto.getVisibility());
+        System.out.println("URL: " + dto.getUrl());
+
         String email = (authentication != null) ? authentication.getName() : "agrawalnidhi241@gmail.com";
-        System.out.println("🔐 Authenticated user: " + email);
+        System.out.println("📧 Email: " + email);
 
         User user = userRepository.findByEmail(email);
         if (user == null) {
+            System.out.println("❌ User not found");
             throw new RuntimeException("User not found");
         }
 
@@ -54,17 +62,18 @@ public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authe
         contribution.setUser(user);
         contribution.setCreatedAt(LocalDateTime.now());
 
-        System.out.println("✅ Ready to save: " + contribution);
+        System.out.println("💾 Saving contribution...");
         contributionRepository.save(contribution);
+
+        System.out.println("✅ Contribution saved successfully!");
         return ResponseEntity.ok("✅ Contribution saved");
-
-    }catch (Exception e) {
-    e.printStackTrace(); // ✅ Prints to Render Logs
-    return ResponseEntity.status(500).body("❌ Server Error: " + e.getClass().getSimpleName() + " → " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("❌ Exception occurred:");
+        e.printStackTrace(); // ✅ This will print full error stack trace
+        return ResponseEntity.internalServerError().body("❌ Server Error: " + e.getMessage());
+    }
 }
 
-
-}
 
 
 @GetMapping("/my")
