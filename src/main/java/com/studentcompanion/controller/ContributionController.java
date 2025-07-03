@@ -34,22 +34,26 @@ private UserRepository userRepository;
 // private CommentRepository commentRepository;
 @PostMapping("/add")
 public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authentication authentication) {
+    System.out.println("🎯 Inside /api/contributions/add");
+    if (dto == null) {
+        System.out.println("❌ DTO is null");
+        return ResponseEntity.badRequest().body("❌ DTO is null");
+    }
+
     try {
-        // Log everything
-        System.out.println("🚀 Incoming contribution payload:");
-        System.out.println("Title: " + dto.getTitle());
-        System.out.println("Type: " + dto.getType());
-        System.out.println("Subject: " + dto.getSubject());
-        System.out.println("Visibility: " + dto.getVisibility());
-        System.out.println("URL: " + dto.getUrl());
+        System.out.println("✅ DTO Title: " + dto.getTitle());
+        System.out.println("✅ DTO Type: " + dto.getType());
+        System.out.println("✅ DTO Subject: " + dto.getSubject());
+        System.out.println("✅ DTO Visibility: " + dto.getVisibility());
+        System.out.println("✅ DTO URL: " + dto.getUrl());
 
         String email = (authentication != null) ? authentication.getName() : "agrawalnidhi241@gmail.com";
-        System.out.println("📧 Email: " + email);
+        System.out.println("📧 Authenticated Email: " + email);
 
         User user = userRepository.findByEmail(email);
         if (user == null) {
             System.out.println("❌ User not found");
-            throw new RuntimeException("User not found");
+            return ResponseEntity.status(404).body("User not found");
         }
 
         Contribution contribution = new Contribution();
@@ -64,15 +68,16 @@ public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authe
 
         System.out.println("💾 Saving contribution...");
         contributionRepository.save(contribution);
+        System.out.println("✅ Contribution saved");
 
-        System.out.println("✅ Contribution saved successfully!");
         return ResponseEntity.ok("✅ Contribution saved");
     } catch (Exception e) {
         System.out.println("❌ Exception occurred:");
-        e.printStackTrace(); // ✅ This will print full error stack trace
+        e.printStackTrace();
         return ResponseEntity.internalServerError().body("❌ Server Error: " + e.getMessage());
     }
 }
+
 
 
 
