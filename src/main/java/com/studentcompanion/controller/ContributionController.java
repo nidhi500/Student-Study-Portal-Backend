@@ -58,10 +58,12 @@ public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authe
         contributionRepository.save(contribution);
         return ResponseEntity.ok("✅ Contribution saved");
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.internalServerError().body("❌ Server Error: " + e.getMessage());
-    }
+    }catch (Exception e) {
+    e.printStackTrace(); // ✅ Prints to Render Logs
+    return ResponseEntity.status(500).body("❌ Server Error: " + e.getClass().getSimpleName() + " → " + e.getMessage());
+}
+
+
 }
 
 
