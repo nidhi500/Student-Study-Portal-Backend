@@ -8,7 +8,9 @@ public class ContributionDTO {
     public String visibility;
     public String url;
 
-    // Optional: Add getters & setters if needed
+    // ✅ No-arg constructor for JSON deserialization
+    public ContributionDTO() {}
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
