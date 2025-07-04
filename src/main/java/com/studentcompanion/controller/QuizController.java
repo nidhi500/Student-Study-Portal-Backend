@@ -23,7 +23,6 @@ import com.studentcompanion.repository.QuizQuestionRepository;
 
 @RestController
 @RequestMapping("/api/quiz")
-@CrossOrigin(origins = "*")
 public class QuizController {
 
     @Autowired
