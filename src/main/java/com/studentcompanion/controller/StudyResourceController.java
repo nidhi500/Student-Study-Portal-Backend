@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = {
-        "http://localhost:3000",
         "https://student-study-portal-frontend.vercel.app"
 }, allowCredentials = "true")
 public class StudyResourceController {
