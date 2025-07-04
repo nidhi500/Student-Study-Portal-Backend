@@ -63,28 +63,24 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-    // Publicly accessible endpoints
-    .requestMatchers(
-        "/api/auth/**",
-        "/api/public/**",
-        "/api/todos/**",
-        "/", "/favicon.ico", "/css/**", "/js/**", "/images/**"
-    ).permitAll()
+                // ✅ 1. Public endpoints
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/api/public/**",
+                    "/api/todos/**",
+                    "/", "/favicon.ico", "/css/**", "/js/**", "/images/**"
+                ).permitAll()
 
-.requestMatchers("/api/auth/**", "/api/public/**", "/api/todos/**", "/", "/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
-    .requestMatchers("/api/comments/**", "/api/contributions/**", "/api/auth/profile").authenticated()
-    .anyRequest().permitAll()
-    
-    // Secure endpoints
-    .requestMatchers(
-        "/api/auth/profile",
-        "/api/comments/**",
-        "/api/contributions/**" // ✅ Add this line to allow contribution endpoints with JWT
-    ).authenticated()
+                // ✅ 2. Authenticated endpoints
+                .requestMatchers(
+                    "/api/comments/**",
+                    "/api/contributions/**",
+                    "/api/auth/profile"
+                ).authenticated()
 
-    .anyRequest().permitAll()
-)
-
+                // ✅ 3. Final fallback
+                .anyRequest().permitAll()
+            )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -93,19 +89,19 @@ public class SecurityConfig {
 
     // CORS Configuration
     @Bean
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOriginPatterns(List.of(
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://student-study-portal-frontend.vercel.app"
-    ));
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(List.of("*"));
-    configuration.setAllowCredentials(true);
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of(
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "https://student-study-portal-frontend.vercel.app"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-}
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
