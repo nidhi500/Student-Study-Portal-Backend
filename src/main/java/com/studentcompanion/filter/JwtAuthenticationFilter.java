@@ -99,7 +99,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicEndpoint(String requestPath) {
+    System.out.println("🔍 Checking public endpoint match for: " + requestPath);
     return publicEndpoints.stream().anyMatch(endpoint ->
         requestPath.equals(endpoint) || requestPath.startsWith(endpoint));
 }
+
 }

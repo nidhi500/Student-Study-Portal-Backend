@@ -71,6 +71,10 @@ public class SecurityConfig {
         "/", "/favicon.ico", "/css/**", "/js/**", "/images/**"
     ).permitAll()
 
+.requestMatchers("/api/auth/**", "/api/public/**", "/api/todos/**", "/", "/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
+    .requestMatchers("/api/comments/**", "/api/contributions/**", "/api/auth/profile").authenticated()
+    .anyRequest().permitAll()
+    
     // Secure endpoints
     .requestMatchers(
         "/api/auth/profile",

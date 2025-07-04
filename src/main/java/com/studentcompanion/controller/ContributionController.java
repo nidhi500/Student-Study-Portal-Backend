@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,6 +39,10 @@ public ResponseEntity<?> addContribution(@RequestBody ContributionDTO dto, Authe
     if (dto == null) {
         System.out.println("❌ DTO is null");
         return ResponseEntity.badRequest().body("❌ DTO is null");
+    }
+    System.out.println("🔐 AUTH IS: " + authentication);
+    if (authentication == null) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Authentication is null");
     }
 
     try {
