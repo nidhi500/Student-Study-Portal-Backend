@@ -3,7 +3,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 @Entity
 public class StriverTopic {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

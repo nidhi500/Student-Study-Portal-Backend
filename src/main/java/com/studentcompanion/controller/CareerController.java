@@ -52,32 +52,33 @@ public class CareerController {
     @GetMapping("/placement/progress")
 public ResponseEntity<?> getStriverProgress(Authentication authentication) {
     try {
-        System.out.println("🔐 Auth email: " + authentication.getName());
+        String email = authentication.getName();
+        System.out.println("🔐 Email from auth: " + email);
 
-        User user = userRepository.findByEmail(authentication.getName());
+        User user = userRepository.findByEmail(email);
+        System.out.println("🔍 Fetched user: " + user);
 
         if (user == null) {
-            System.out.println("❌ User not found for email: " + authentication.getName());
+            System.err.println("❌ User not found: " + email);
             return ResponseEntity.status(401).body(Collections.singletonMap("error", "User not found"));
         }
 
-        System.out.println("✅ User found: " + user.getEmail());
-
         List<StriverTopic> topics = striverTopicRepository.findByUser(user);
-
-        if (topics.isEmpty()) {
-            System.out.println("ℹ️ No existing topics. Creating defaults...");
+        if (topics == null || topics.isEmpty()) {
+            System.out.println("📃 No existing topics — creating default ones.");
             List<StriverTopic> defaultTopics = getDefaultStriverTopics(user);
             striverTopicRepository.saveAll(defaultTopics);
             return ResponseEntity.ok(defaultTopics);
         }
 
         return ResponseEntity.ok(topics);
+
     } catch (Exception e) {
-        e.printStackTrace(); // 🔴 This will show in Render logs
-        return ResponseEntity.status(500).body(Collections.singletonMap("error", "Server error occurred"));
+        e.printStackTrace();
+        return ResponseEntity.status(500).body(Collections.singletonMap("error", "Internal server error"));
     }
 }
+
 
     // ✅ Mark Striver topic as attempted
     @PostMapping("/placement/attempt")
