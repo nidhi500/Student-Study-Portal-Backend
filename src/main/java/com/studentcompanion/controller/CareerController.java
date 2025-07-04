@@ -50,22 +50,34 @@ public class CareerController {
 
     // ✅ Existing: Placement progress (Striver)
     @GetMapping("/placement/progress")
-    public ResponseEntity<?> getStriverProgress(Authentication authentication) {
+public ResponseEntity<?> getStriverProgress(Authentication authentication) {
+    try {
+        System.out.println("🔐 Auth email: " + authentication.getName());
+
         User user = userRepository.findByEmail(authentication.getName());
 
         if (user == null) {
+            System.out.println("❌ User not found for email: " + authentication.getName());
             return ResponseEntity.status(401).body(Collections.singletonMap("error", "User not found"));
         }
 
+        System.out.println("✅ User found: " + user.getEmail());
+
         List<StriverTopic> topics = striverTopicRepository.findByUser(user);
+
         if (topics.isEmpty()) {
+            System.out.println("ℹ️ No existing topics. Creating defaults...");
             List<StriverTopic> defaultTopics = getDefaultStriverTopics(user);
             striverTopicRepository.saveAll(defaultTopics);
             return ResponseEntity.ok(defaultTopics);
         }
 
         return ResponseEntity.ok(topics);
+    } catch (Exception e) {
+        e.printStackTrace(); // 🔴 This will show in Render logs
+        return ResponseEntity.status(500).body(Collections.singletonMap("error", "Server error occurred"));
     }
+}
 
     // ✅ Mark Striver topic as attempted
     @PostMapping("/placement/attempt")
