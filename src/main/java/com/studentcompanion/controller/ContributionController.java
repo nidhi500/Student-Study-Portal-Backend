@@ -23,7 +23,6 @@ import com.studentcompanion.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/contributions")
-@CrossOrigin(origins = "*")
 public class ContributionController {
 @Autowired
 private ContributionRepository contributionRepository;
