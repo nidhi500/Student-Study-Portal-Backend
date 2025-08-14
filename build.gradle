@@ -25,10 +25,13 @@ dependencies {
 
     // Password Encoding
     implementation 'org.springframework.security:spring-security-crypto'
+    implementation 'org.postgresql:postgresql:42.7.2'
+
 
     // ✅ PostgreSQL driver
     runtimeOnly 'org.postgresql:postgresql:42.6.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    
 }
