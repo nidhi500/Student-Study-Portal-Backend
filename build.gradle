@@ -13,10 +13,14 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot Starters
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // PostgreSQL Driver
+    runtimeOnly 'org.postgresql:postgresql:42.7.2'
 
     // JWT Dependencies
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -25,13 +29,8 @@ dependencies {
 
     // Password Encoding
     implementation 'org.springframework.security:spring-security-crypto'
-    implementation 'org.postgresql:postgresql:42.7.2'
 
-
-    // ✅ PostgreSQL driver
-    runtimeOnly 'org.postgresql:postgresql:42.6.0'
-
+    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    
 }
