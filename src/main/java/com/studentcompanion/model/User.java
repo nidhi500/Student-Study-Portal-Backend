@@ -29,36 +29,53 @@ public class User {
 
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     private String password;
 
+    @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
+
+    @Column(name = "email_verified", nullable = false)
     private boolean emailVerified = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     private Role role = Role.STUDENT;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     private String branch;
 
-    @Column(unique = true)
+    @Column(name = "enrollment_number", unique = true)
     private String enrollmentNumber;
 
+    @Column(name = "current_semester")
     private Integer currentSemester;
+
     private String gender;
-    
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "goal")
     private CareerGoal goal;
 
+    @Column(name = "other_goal")
     private String otherGoal;
+
+    @Column(name = "leetcode_url")
     private String leetcodeUrl;
+
+    @Column(name = "github_url")
     private String githubUrl;
+
     private String skills;
+
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @ManyToOne
@@ -68,8 +85,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Contribution> contributions;
-
-   
 
     // --- Getters and Setters ---
     public Long getId() { return id; }
